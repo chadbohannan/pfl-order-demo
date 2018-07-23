@@ -1,0 +1,60 @@
+instance_class: F1
+runtime: go
+api_version: go1
+
+handlers:
+- url: /robots.txt
+  static_files: robots.txt
+  upload: robots.txt
+
+- url: /(.*\.ico)
+  mime_type: image/x-icon
+  static_files: ng2-app/dist/\1
+  upload: ng2-app/dist/(.*\.ico)
+  expiration: "7d"
+
+- url: /(.*\.ttf)
+  mime_type: font/truetype
+  static_files: ng2-app/dist/\1
+  upload: ng2-app/dist/(.*\.ttf)
+
+- url: /(.*\.woff)
+  mime_type: application/x-font-woff
+  static_files: ng2-app/dist/\1
+  upload: ng2-app/dist/(.*\.woff)
+
+- url: /(.*\.woff2)
+  mime_type: application/x-font-woff2
+  static_files: ng2-app/dist/\1
+  upload: ng2-app/dist/(.*\.woff2)
+
+- url: /(.*\.js)
+  mime_type: text/javascript
+  static_files: ng2-app/dist/\1
+  upload: ng2-app/dist/(.*\.js)
+
+- url: /(.*\.html)
+  mime_type: text/html
+  static_files: ng2-app/dist/\1
+  upload: ng2-app/dist/(.*\.html)
+  expiration: "1h"
+  secure: always
+
+- url: /(.*\.css)
+  mime_type: text/css
+  static_files: ng2-app/dist/\1
+  upload: ng2-app/dist/(.*\.css)
+
+- url: /
+  static_files: ng2-app/dist/index.html
+  upload: ng2-app/dist/index.html
+  secure: always
+
+- url: /.*
+  script: _go_app
+  secure: always
+
+skip_files:
+- ^(.*/)?e2e
+- ^(.*/)?node_modules
+- ^(.*/)?src
