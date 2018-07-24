@@ -15,6 +15,7 @@ type Setting struct {
 
 // PutSetting persists a value for a key
 func PutSetting(c context.Context, key, value string) error {
+	// TODO memcache
 	k := datastore.NewKey(c, settingsKind, key, 0, nil)
 	if _, err := datastore.Put(c, k, &Setting{value}); err != nil {
 		return err
@@ -24,6 +25,7 @@ func PutSetting(c context.Context, key, value string) error {
 
 // GetSetting retrieves a value stored for a key, saves empty record on failure
 func GetSetting(c context.Context, key string) (string, error) {
+	// TODO memcache
 	setting := &Setting{}
 	k := datastore.NewKey(c, settingsKind, key, 0, nil)
 	if err := datastore.Get(c, k, setting); err != nil {

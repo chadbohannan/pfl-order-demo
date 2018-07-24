@@ -1,6 +1,7 @@
 package gopfl
 
 import (
+	"fmt"
 	"net/http"
 
 	"github.com/chadbohannan/gae-session-store/gaess"
@@ -12,7 +13,9 @@ import (
 const (
 	apiKey         = "apikey"
 	credentialsKey = "credentials"
-	productsAPI    = "https://testapi.pfl.com/products?apikey="
+	remoteHostKey  = "remoteHost"
+	productsAPI    = "%s/products?apikey=%s"    // 2 params
+	productAPI     = "%s/products/%s?apikey=%s" // 3 params
 )
 
 // TODO read product details
@@ -22,11 +25,11 @@ const (
 // Init maps HTTP routes to handlers.
 // router is  returned for chaining calls.
 func Init(router *mux.Router) *mux.Router {
-	gaess.SessionRoute(router, "GET", "/session", GetSessionUser, false)
-	gaess.SessionRoute(router, "POST", "/session", PostSessionUser, false)
-	gaess.SessionRoute(router, "GET", "/clear_session", ClearSessionUser, true)
-	gaess.SessionRoute(router, "GET", "/products", GetProducts, false)
-	gaess.SessionRoute(router, "GET", "/products/{ID}", GetProductDetail, true)
+	gaess.SessionRoute(router, "GET", "/api/session", GetSessionUser, false)
+	gaess.SessionRoute(router, "POST", "/api/session", PostSessionUser, false)
+	gaess.SessionRoute(router, "GET", "/api/clear_session", ClearSessionUser, true)
+	gaess.SessionRoute(router, "GET", "/api/products", GetProducts, false)
+	gaess.SessionRoute(router, "GET", "/api/products/{ID}", GetProductDetail, false)
 	return router
 }
 
@@ -44,26 +47,17 @@ func ClearSessionUser(w http.ResponseWriter, r *http.Request, session *sessions.
 
 // GetProducts is a gaess.EndpointHandler type function
 func GetProducts(w http.ResponseWriter, r *http.Request, session *sessions.Session) {
-
-	// TODO if session is new create a new user
-
 	c := appengine.NewContext(r)
-	creds, err := GetSetting(c, credentialsKey)
+	hostName, creds, apikey, err := getAccessParameters(c)
 	if err != nil {
-		WriteJSONError(c, w, "service configuration A missing, "+err.Error())
+		WriteJSONError(c, w, err.Error())
 		return
 	}
 
-	apikey, err := GetSetting(c, apiKey)
-	if err != nil {
-		WriteJSONError(c, w, "service configuration B missing, "+err.Error())
-		return
-	}
-
-	url := productsAPI + apikey
+	url := fmt.Sprintf(productsAPI, hostName, apikey)
 	content, err := GetURLContentBasicAuth(c, url, creds)
 	if err != nil {
-		WriteJSONError(c, w, "products GET failed:"+err.Error())
+		WriteJSONError(c, w, "GET products failed:"+err.Error())
 		return
 	}
 
@@ -74,6 +68,22 @@ func GetProducts(w http.ResponseWriter, r *http.Request, session *sessions.Sessi
 
 // GetProductDetail fetches a more detailed product description than the GetProducts list
 func GetProductDetail(w http.ResponseWriter, r *http.Request, session *sessions.Session) {
-	// productID := mux.Vars(r)["ID"]
+	c := appengine.NewContext(r)
+	hostName, creds, apikey, err := getAccessParameters(c)
+	if err != nil {
+		WriteJSONError(c, w, err.Error())
+		return
+	}
 
+	productID := mux.Vars(r)["ID"]
+	url := fmt.Sprintf(productAPI, hostName, productID, apikey)
+	content, err := GetURLContentBasicAuth(c, url, creds)
+	if err != nil {
+		WriteJSONError(c, w, "GET product "+productID+" failed:"+err.Error())
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(200)
+	w.Write(content)
 }
