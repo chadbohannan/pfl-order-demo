@@ -23,10 +23,10 @@ From reviewing the API documentation I've inferred a plausible workflow:
  1. List Products
    * [Get Products](#get-products) 
  2. Select Product
-   * [Get Product Detailss](#get-product-details) 
+   * [Get Product Details](#get-product-details) 
  3. Customize Product
    * Custom product parameter tempates
-   * Upload PDF to 
+   * Upload PDFs or use set of static files
  4. Input Recipient Data
    * Name
    * Address
@@ -147,7 +147,7 @@ GET https://testapi.pfl.com/products?apikey=123&id=123
 ```
 
 ### Post Order
-[apidoc]: [https://www.printingforless.com/partners/api/APIs/Orders_API/Create_Order_Examples/Partner_Provides_Template_Data]
+[apidoc]: https://www.printingforless.com/partners/api/APIs/Orders_API/Create_Order_Examples/Partner_Provides_Template_Data
 APIs: Orders API: Create Order Examples: (Partner Provides Template Data)[apidoc]
 
 ```
@@ -213,8 +213,8 @@ POST https://testapi.pfl.com/products?apikey=123&id=123
 ### Post Price Lookup
 ```
 POST https://testapi.pfl.com/products?apikey=123&id=123
-(same as #(post-order))
 ```
+Same as #(post-order)
 
 
 ## Build dependencies
@@ -229,8 +229,8 @@ TODO
 
 ## Deploy
 
-TODO
+```./shipit.sh```
 
 ## Configure
 
-TODO
+TODO setting PFL credentials
