@@ -5,12 +5,14 @@ import { AppComponent } from './app.component';
 import { ProductListComponent } from './product-list/product-list.component';
 import { ArchwizardModule } from 'angular-archwizard';
 import { ProductDetailsComponent } from './product-details/product-details.component';
+import { ProductItemComponent } from './product-item/product-item.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     ProductListComponent,
-    ProductDetailsComponent
+    ProductDetailsComponent,
+    ProductItemComponent
   ],
   imports: [
     ArchwizardModule,

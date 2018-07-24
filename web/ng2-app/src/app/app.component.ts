@@ -14,7 +14,7 @@ export class AppComponent {
   selectedProduct = {};                       // wizard step 1
   productDetails = new Map<string, string>(); // wizard step 2
 
-  @ViewChild(WizardComponent)
+  @ViewChild("wizard")
   public wizard: WizardComponent;
 
   // selectedProduct is an input parameter to the Product Details step
