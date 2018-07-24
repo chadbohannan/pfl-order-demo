@@ -1,6 +1,6 @@
 # pfl-order-demo
 
-[Live Intsance](https://pfl-order-demo.appspot.com)
+[Live Instance](https://pfl-order-demo.appspot.com)
 
 ## Task
 Using the PFL API create an application that calls out to our API to retrieve 

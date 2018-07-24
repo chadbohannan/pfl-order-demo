@@ -1,0 +1,13 @@
+.centered-content {
+  margin: auto;
+  text-align: center;
+}
+
+.stub-header {
+  font-size: 2.4em;
+  line-height: 2em;
+}
+
+.bottom-15 {
+  margin-bottom: 15px;
+}

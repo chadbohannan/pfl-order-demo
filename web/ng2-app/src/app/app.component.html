@@ -1,5 +1,5 @@
 <!--The content below is only a placeholder and can be replaced.-->
-<div style="text-align:center">
+<div style="margin: auto; text-align:center; max-width: 900px;">
   <h1>
     PFL Order Demo
   </h1>
@@ -7,73 +7,45 @@
     Lorem ipsum dolor sit amet, consectetur adipiscing elit.
   </p>
   <aw-wizard #wizard>
-    <aw-wizard-step [stepTitle]="'Select\nProduct'">
-      <div class="centered-content">
-        
-        <app-product-list></app-product-list>
-
-        <div class="btn-group">
-          <button type="button" class="btn btn-secondary" [awGoToStep]="{ stepIndex: 1 }">Customize</button>
-        </div>
-      </div>
+    <aw-wizard-step [stepTitle]="'Select Product'">        
+      <app-product-list (selection)="productSelected($event)"></app-product-list>
     </aw-wizard-step>
-    <aw-wizard-step [stepTitle]="'Refine\nProduct'">
-      <div class="centered-content">
-        <h1>
-           Product Details
-        </h1>
-        <div>
-          TODO
-        </div>
 
-        <div class="btn-group">
-          <button type="button" class="btn btn-secondary" [awGoToStep]="{ stepOffset: -1 }">Products</button>
-          <button type="button" class="btn btn-secondary" [awGoToStep]="{ stepOffset: 1 }">Recipient</button>
-        </div>
+    <aw-wizard-step [stepTitle]="'Refine Product'">
+      <app-product-details [product]="selectedProduct"></app-product-details>
+      <div class="btn-group">
+        <button type="button" class="btn btn-secondary" [awGoToStep]="{ stepOffset: 1 }">Next Step</button>
+        <!-- <button type="button" class="btn btn-secondary" [awGoToStep]="{ stepOffset: -1 }">Products</button> -->
       </div>
     </aw-wizard-step>
 
-    <aw-wizard-step [stepTitle]="'Recipient\nDetails'">
-      <div class="centered-content">
-        <h1>
-          Recipient Address
-        </h1>
-        <div>
-          TODO
-        </div>
-    
-        <div class="btn-group">
-          <button type="button" class="btn btn-secondary" [awGoToStep]="{ stepOffset: -1 }">Customize</button>
-          <button type="button" class="btn btn-secondary" [awGoToStep]="{ stepOffset: 1 }">Finalize</button>
-        </div>
+    <aw-wizard-step [stepTitle]="'Recipient Details'">
+      <div class="stub-header">
+        Recipient Address
+      </div>  
+      <div class="btn-group">
+        <!-- <button type="button" class="btn btn-secondary" [awGoToStep]="{ stepOffset: -1 }">Customize</button> -->
+        <button type="button" class="btn btn-secondary" [awGoToStep]="{ stepOffset: 1 }">Place Order</button>
       </div>
     </aw-wizard-step>
 
-    <aw-wizard-step [stepTitle]="'Payment\nMethod'">
+    <aw-wizard-step [stepTitle]="'Place Order'">
       <div class="centered-content">
-        <h1>
-          Finalize Order
-        </h1>
-        <div>
-          TODO
-        </div>
-    
+        <div class="stub-header">
+          Place Order
+        </div>    
         <div class="btn-group">
-          <button type="button" class="btn btn-secondary" [awGoToStep]="{ stepOffset: -1 }">Recipient</button>
+          <!-- <button type="button" class="btn btn-secondary" [awGoToStep]="{ stepOffset: -1 }">Recipient</button> -->
           <button type="button" class="btn btn-secondary" [awGoToStep]="{ stepOffset: 1 }">Accept</button>
         </div>
       </div>
     </aw-wizard-step>
 
-    <aw-wizard-step [stepTitle]="'Review\nOrder'">
+    <aw-wizard-step [stepTitle]="'Review Order'">
       <div class="centered-content">
-        <h1>
+        <div class="stub-header">
           Review Order
-        </h1>
-        <div>
-          TODO
         </div>
-
         <div class="btn-group">
           <button type="button" class="btn btn-secondary" awResetWizard>Reset</button>
         </div>

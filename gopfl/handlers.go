@@ -6,6 +6,7 @@ import (
 	"github.com/chadbohannan/gae-session-store/gaess"
 	"github.com/gorilla/mux"
 	"github.com/gorilla/sessions"
+	"google.golang.org/appengine"
 )
 
 // TODO read product list
@@ -19,7 +20,7 @@ func Init(router *mux.Router) *mux.Router {
 	gaess.SessionRoute(router, "GET", "/session", GetSessionUser, false)
 	gaess.SessionRoute(router, "POST", "/session", PostSessionUser, false)
 	gaess.SessionRoute(router, "GET", "/clear_session", ClearSessionUser, true)
-	gaess.SessionRoute(router, "GET", "/products", GetProducts, true)
+	gaess.SessionRoute(router, "GET", "/products", GetProducts, false)
 	gaess.SessionRoute(router, "GET", "/products/{ID}", GetProductDetail, true)
 	return router
 }
@@ -38,6 +39,13 @@ func ClearSessionUser(w http.ResponseWriter, r *http.Request, session *sessions.
 
 // GetProducts is a gaess.EndpointHandler type function
 func GetProducts(w http.ResponseWriter, r *http.Request, session *sessions.Session) {
+	c := appengine.NewContext(r)
+
+	response := &map[string]interface{}{
+		"hello": "world",
+	}
+
+	WriteJSONResponse(c, w, response, 200)
 }
 
 // GetProductDetail fetches a more detailed product description than the GetProducts list

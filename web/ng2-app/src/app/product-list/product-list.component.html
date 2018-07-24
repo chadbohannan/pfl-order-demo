@@ -1,6 +1,13 @@
-<h2>
+<div class="stub-header">
   Select Product
-</h2>
-<p>
-  TODO
-</p>
+</div>
+<table class="centered-content bottom-15">
+  <tbody>
+    <tr *ngFor="let data of productData.results.data; let i = index" (click)="onSelect(i)">
+      <td >{{data.name}}</td>
+      <td>{{data.description}}</td>
+      <td><img src="{{data.imageURL}}" width=200></td>
+    </tr>
+    
+  </tbody>
+</table>
