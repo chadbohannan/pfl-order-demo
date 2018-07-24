@@ -1,4 +1,5 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Http, Headers } from '@angular/http';
 
 @Component({
   selector: 'app-product-list',
@@ -15,23 +16,11 @@ export class ProductListComponent implements OnInit {
       "messages": [],
       "data": [
         {
-          "id": 1,
-          "productID": 2,
-          "name": "uploads!",
-          "description": "glitter",
-          "imageURL": "https://biglittleidea.org/api/v1/media/5367079314128896/file",
-          "hasTemplate": true,
-          "quantityDefault": 10,
-          "quantityIncrement": 10,
-          "quantityMaximum": 100,
-          "quantityMinimum": 10,
-        },
-        {
-          "id": 3,
-          "productID": 4,
-          "name": "art of war",
-          "description": "video game",
-          "imageURL": "https://biglittleidea.org/api/v1/media/5646620347596800/file",
+          "id": 0,
+          "productID": 0,
+          "name": "Loading....",
+          "description": "Please be patient",
+          "imageURL": "/assets/loading.gif",
           "hasTemplate": true,
           "quantityDefault": 10,
           "quantityIncrement": 10,
@@ -42,13 +31,24 @@ export class ProductListComponent implements OnInit {
     }
   };
 
-  constructor() { }
+  constructor(private http: Http) { }
 
-  ngOnInit() { }
-
+  ngOnInit() {
+    const url = '/api/products'
+    const headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    this.http.get(url, { headers: headers })
+      .subscribe(response => {
+        this.productData = response.json();
+      }, error => {
+        console.log('GET products err:' + error.json());
+      });
+  }
 
   onSelect(i: number) {
     console.log('selected:' + this.productData.results.data[i].name);
     this.selection.emit(this.productData.results.data[i]);
   }
+
+
 }
