@@ -6,9 +6,6 @@ import (
 	"google.golang.org/appengine/datastore"
 )
 
-// TODO store test service hostname
-// TODO store Basic Authentication credentials
-
 const settingsKind = "Settings"
 
 // Setting encapsulates a string value
@@ -25,12 +22,16 @@ func PutSetting(c context.Context, key, value string) error {
 	return nil
 }
 
-// GetSetting retrieves a value stored for a key
+// GetSetting retrieves a value stored for a key, saves empty record on failure
 func GetSetting(c context.Context, key string) (string, error) {
-	var setting *Setting
+	setting := &Setting{}
 	k := datastore.NewKey(c, settingsKind, key, 0, nil)
 	if err := datastore.Get(c, k, setting); err != nil {
-		return "", err
+		if err == datastore.ErrNoSuchEntity {
+			return "", PutSetting(c, key, "")
+		} else {
+			return "", err
+		}
 	}
 	return setting.Value, nil
 }

@@ -9,7 +9,12 @@ import (
 	"google.golang.org/appengine"
 )
 
-// TODO read product list
+const (
+	apiKey         = "apikey"
+	credentialsKey = "credentials"
+	productsAPI    = "https://testapi.pfl.com/products?apikey="
+)
+
 // TODO read product details
 // TODO handle custom templates
 // TODO place orders
@@ -39,16 +44,36 @@ func ClearSessionUser(w http.ResponseWriter, r *http.Request, session *sessions.
 
 // GetProducts is a gaess.EndpointHandler type function
 func GetProducts(w http.ResponseWriter, r *http.Request, session *sessions.Session) {
-	c := appengine.NewContext(r)
 
-	response := &map[string]interface{}{
-		"hello": "world",
+	// TODO if session is new create a new user
+
+	c := appengine.NewContext(r)
+	creds, err := GetSetting(c, credentialsKey)
+	if err != nil {
+		WriteJSONError(c, w, "service configuration A missing, "+err.Error())
+		return
 	}
 
-	WriteJSONResponse(c, w, response, 200)
+	apikey, err := GetSetting(c, apiKey)
+	if err != nil {
+		WriteJSONError(c, w, "service configuration B missing, "+err.Error())
+		return
+	}
+
+	url := productsAPI + apikey
+	content, err := GetURLContentBasicAuth(c, url, creds)
+	if err != nil {
+		WriteJSONError(c, w, "products GET failed:"+err.Error())
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(200)
+	w.Write(content)
 }
 
 // GetProductDetail fetches a more detailed product description than the GetProducts list
 func GetProductDetail(w http.ResponseWriter, r *http.Request, session *sessions.Session) {
 	// productID := mux.Vars(r)["ID"]
+
 }
