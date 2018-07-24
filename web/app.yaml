@@ -7,6 +7,31 @@ handlers:
   static_files: robots.txt
   upload: robots.txt
 
+- url: /assets/(.*\.(png))
+  mime_type: images/png
+  static_files: ng2-app/dist/assets/\1
+  upload: ng2-app/dist/(.*\.(png))
+
+- url: /assets/(.*\.(gif))
+  mime_type: image/gif
+  static_files: ng2-app/dist/assets/\1
+  upload: ng2-app/dist/(.*\.(gif))
+
+- url: /assets/(.*\.(jpeg|jpg))
+  mime_type: image/jpeg
+  static_files: ng2-app/dist/assets/\1
+  upload: ng2-app/dist/(.*\.(jpeg|jpg))
+
+- url: /assets/(.*\.(svg|svgz))
+  mime_type: image/svg+xml
+  static_files: ng2-app/dist/assets/\1
+  upload: ng2-app/dist/(.*\.(svg|svgz))
+
+- url: /assets/(.*\.(json))
+  mime_type: application/json
+  static_files: ng2-app/dist/assets/\1
+  upload: ng2-app/dist/(.*\.(json))
+
 - url: /(.*\.ico)
   mime_type: image/x-icon
   static_files: ng2-app/dist/\1
