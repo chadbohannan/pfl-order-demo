@@ -12,7 +12,7 @@ export class ProductDetailsComponent implements OnInit {
   product: any;  // TODO formalize Product as a class
   details: any; // should be a superset of product
   quantity = 0;
-  fieldMap = new Map<string, string>();
+  fieldMap = {};
   fieldList = [];
 
   constructor(private http: Http) { }
@@ -23,7 +23,7 @@ export class ProductDetailsComponent implements OnInit {
   ngOnChanges() {
     if (this.product.productID) {
       this.getProductDetails(this.product.productID);
-      this.fieldMap.clear();
+      this.fieldMap = {};
       this.fieldList = [];
       this.quantity = this.product.quantityMinimum;
     }
@@ -53,35 +53,44 @@ export class ProductDetailsComponent implements OnInit {
   }
 
   canIncrementQuantity() {
-    if (this.product.quantityMaximum == null) {
+    const max = this.product.quantityMaximum || 0;
+    if (max == 0) {
       return true;
     }
-      
-    if (this.product.quantityIncrement &&
-      (this.quantity + this.product.quantityIncrement) <= this.product.quantityMaximum) {
+    
+    const inc = this.product.quantityIncrement || 1;
+    if ((this.quantity + inc) <= this.product.quantityMaximum) {
         return true;
     }
     return false;
   } 
 
   canDecrementQuantity() {
-    if (this.product.quantityIncrement &&
-      this.quantity - this.product.quantityIncrement >= this.product.quantityMinimum) {
+    const inc = this.product.quantityIncrement || 1;
+    if ( (this.quantity - inc) >= this.product.quantityMinimum) {
         return true;
     }
     return false;
   }
 
   onIncrementQuantity() {
+    const inc = this.product.quantityIncrement || 1;
     if (this.product.quantityIncrement) {
-      this.quantity += this.product.quantityIncrement
+      this.quantity += inc;
     }
   }
 
   onDecrementQuantity() {
+    const inc = this.product.quantityIncrement || 1;
     if (this.product.quantityIncrement) {
-      this.quantity -= this.product.quantityIncrement
+      this.quantity -= inc;
     }
   }
 
+  setDefaultFieldValue(field) {
+    if (!this.fieldMap[field.fieldname] || 
+      this.fieldMap[field.fieldname].length == 0 ) {
+      this.fieldMap[field.fieldname] = field.orgvalue;
+    }
+  }
 }

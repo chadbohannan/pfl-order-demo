@@ -5,13 +5,30 @@
 
 <div class="container bottom-15">
   <div class="row">
-    <div class="col-7">
+    <div class="col-8">
+      <div class="text-left">
+        Delivery Selection
+      </div>
+    </div>
+    <div class="col-4">
+      <div class="text-right">
+        Quantity
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-8 text-left">
       <select style="width:100%; margin:auto;">
-        <option id="0">shipping options</option>
+        <option 
+          *ngFor="let opt of product.deliveredPrices; let i = index" 
+          id="{{opt.deliveryMethodCode}}" selected="{{opt.isDefault}}">
+          ${{opt.price.toFixed(2)}} - {{opt.description}} {{opt.country}}
+        </option>
       </select>
     </div>
-    <div class="col-5">
-      Qty: {{quantity}}
+    <div class="col-4 text-right" *ngIf="product.id">
+      {{quantity}}
       <button (click)="onDecrementQuantity()" [disabled]="!canDecrementQuantity()">-</button>
       <button (click)="onIncrementQuantity()" [disabled]="!canIncrementQuantity()">+</button>
     </div>
@@ -23,6 +40,11 @@
   <div class="fields-header">
     Customization Template
   </div>
+  <div class="helper-text">
+    <i>
+      Hint: Double-click or press 'Enter' in an empty field to use configured default values.
+    </i>
+  </div>
   <div *ngFor="let field of fieldList; let i = index">
     <div class="container">
       <input
@@ -31,6 +53,8 @@
         style="width:100%;"
         [(ngModel)]="fieldMap[field.fieldname]" 
         [ngModelOptions]="{standalone: true}"
+        (dblclick)="setDefaultFieldValue(field)"
+        (keydown.enter)="setDefaultFieldValue(field)"
         placeholder="{{field.prompt[0].text}}"> 
     </div>
     
