@@ -37,8 +37,8 @@ func GetURLContentBasicAuth(c context.Context, url, auth string) ([]byte, error)
 	if err != nil {
 		return nil, err
 	}
-	// cache result
-	getCache[url] = result
+	// cache result DISABLED until cache expiration logic is used
+	// getCache[url] = result
 	return result, nil
 }
 
