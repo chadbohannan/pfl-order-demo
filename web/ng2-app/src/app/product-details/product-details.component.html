@@ -2,7 +2,36 @@
   Refine Product
 </div>
 <app-product-item [product]="product"></app-product-item>
-  
-<p>
-  TODO details
-</p>
+
+<div class="container bottom-15">
+  <div class="row">
+    <div class="col-7">
+      <select style="width:100%; margin:auto;">
+        <option id="0">shipping options</option>
+      </select>
+    </div>
+    <div class="col-5">
+      Qty: {{quantity}}
+      <button (click)="onDecrementQuantity()" [disabled]="!canDecrementQuantity()">-</button>
+      <button (click)="onIncrementQuantity()" [disabled]="!canIncrementQuantity()">+</button>
+    </div>
+  </div>
+
+</div>
+
+<div *ngIf="product.hasTemplate">
+  <div class="fields-header">
+    Customization Template
+  </div>
+  <div *ngFor="let field of fieldList; let i = index">
+    <div class="container">
+      <input
+        type="text" 
+        class="form-input form-control bottom-15"
+        style="width:100%;"
+        [(ngModel)]="fieldMap[field.fieldname]" 
+        [ngModelOptions]="{standalone: true}"
+        placeholder="{{field.prompt[0].text}}"> 
+    </div>
+    
+</div>

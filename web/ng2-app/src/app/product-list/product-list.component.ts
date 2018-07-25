@@ -34,6 +34,16 @@ export class ProductListComponent implements OnInit {
   constructor(private http: Http) { }
 
   ngOnInit() {
+    this.getProductList();
+  }
+
+  onSelect(i: number) {
+    console.log('selected:' + this.productData.results.data[i].name);
+    this.selection.emit(this.productData.results.data[i]);
+  }
+
+  // getProductList doesn't need any parameters
+  getProductList() {
     const url = '/api/products'
     const headers = new Headers();
     headers.append('Content-Type', 'application/json');
@@ -44,11 +54,4 @@ export class ProductListComponent implements OnInit {
         console.log('GET products err:' + error.json());
       });
   }
-
-  onSelect(i: number) {
-    console.log('selected:' + this.productData.results.data[i].name);
-    this.selection.emit(this.productData.results.data[i]);
-  }
-
-
 }
