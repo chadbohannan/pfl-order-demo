@@ -9,13 +9,15 @@ export class OrderPriceComponent implements OnChanges, OnInit {
   @Input()
   order: any;
 
+  response = "";
+
   constructor() { }
 
   ngOnInit() {
   }
 
   ngOnChanges() {
-    console.log('order changed, TODO lookup price')
+    // console.log('order changed, TODO lookup price')
   }
 
   orderText(): string {

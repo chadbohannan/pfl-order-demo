@@ -21,9 +21,9 @@
 
     <aw-wizard-step [stepTitle]="'Place Order'">
       <app-order-price [order]="order"></app-order-price>
-      
+      <p>{{priceResponse}}</p>
       <div class="btn-group">
-        <button type="button" class="btn btn-secondary" [awGoToStep]="{ stepOffset: 1 }">Place Order</button>
+        <button type="button" class="btn btn-secondary" (click)="onPlaceOrder()">Place Order</button>
       </div>
       
     </aw-wizard-step>

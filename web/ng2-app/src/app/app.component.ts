@@ -1,4 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
+import { Http, Headers } from '@angular/http';
+
 import { WizardComponent } from 'angular-archwizard';
 
 
@@ -17,9 +19,12 @@ export class AppComponent {
   shippingMethod = "";
   recipient: any;       // wizard step 3
   order: any;           // wizard step 4
+  priceResponse = "";
 
   @ViewChild("wizard")
   public wizard: WizardComponent;
+
+  constructor(private http: Http) {}
 
   // selectedProduct is an input parameter to the Product Details step
   productSelected(selection) {
@@ -41,7 +46,6 @@ export class AppComponent {
     // TODO compose an order object
     const templateData = [];
     Object.keys(this.productDetails).forEach(element => {
-      console.log(element);
       templateData.push({
         templateDataName: "CompanyName",
         templateDataValue: "Colorful Baloons Ltd."
@@ -50,6 +54,7 @@ export class AppComponent {
     
 
     this.order = {
+      partnerOrderReference: "refCode::TODO",
       orderCustomer: {
         firstName: "Hard",
         lastName:  "Coded",
@@ -77,6 +82,7 @@ export class AppComponent {
         }, this.recipient)
       ]
     };
+    this.postPriceQuery();
     this.goToNextStep();
   }
 
@@ -86,5 +92,25 @@ export class AppComponent {
 
   goToPreviousStep() {
     this.wizard.navigation.goToPreviousStep();
+  }
+
+  onPlaceOrder() {
+    this.postPriceQuery();
+    // this.order = {};
+  }
+
+  postPriceQuery() {
+    const url = '/api/price';
+    const headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    const body = JSON.stringify(this.order);
+    const that = this;
+    this.http.post(url, body, { headers: headers })
+      .subscribe(response => {
+        const responce = response.json();
+        that.priceResponse = response.text();
+      }, error => {
+        that.priceResponse = "Error: " + error.text();
+      });
   }
 }
