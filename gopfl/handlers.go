@@ -108,12 +108,9 @@ func PostPriceHandler(w http.ResponseWriter, r *http.Request, session *sessions.
 	c := appengine.NewContext(r)
 
 	// parse upload to validate that it's legit JSON
-	var err error
-	var body []byte
 	order := &map[string]interface{}{}
-	if body, err = ioutil.ReadAll(r.Body); err == nil {
+	if body, err := ioutil.ReadAll(r.Body); err == nil {
 		if err := json.Unmarshal([]byte(body), order); err != nil {
-			fmt.Printf("err A:%s", err.Error())
 			WriteJSONError(c, w, err.Error())
 			return
 		}
@@ -121,7 +118,13 @@ func PostPriceHandler(w http.ResponseWriter, r *http.Request, session *sessions.
 
 	hostName, creds, apikey, err := getAccessParameters(c)
 	if err != nil {
-		fmt.Printf("err B:%s", err.Error())
+		WriteJSONError(c, w, err.Error())
+		return
+	}
+
+	// reserialize the JSON
+	body, err := json.Marshal(order)
+	if err != nil {
 		WriteJSONError(c, w, err.Error())
 		return
 	}
@@ -129,12 +132,9 @@ func PostPriceHandler(w http.ResponseWriter, r *http.Request, session *sessions.
 	url := fmt.Sprintf(priceAPI, hostName, apikey)
 	content, statusCode, err := PostURLContentBasicAuth(c, url, creds, body)
 	if err != nil {
-		fmt.Printf("err C:%s", err.Error())
 		WriteJSONError(c, w, "POST price failed:"+err.Error())
 		return
 	}
-
-	fmt.Printf("OK D")
 
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(statusCode)

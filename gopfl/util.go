@@ -43,13 +43,14 @@ func GetURLContentBasicAuth(c context.Context, url, auth string) ([]byte, int, e
 	return result, response.StatusCode, nil
 }
 
-// GetURLContentBasicAuth executs a blocking GET of a url with a Basic Auth header
+// PostURLContentBasicAuth executs a blocking GET of a url with a Basic Auth header
 func PostURLContentBasicAuth(c context.Context, url, auth string, body []byte) ([]byte, int, error) {
 	request, err := http.NewRequest("POST", url, bytes.NewBuffer(body))
 	if err != nil {
 		return nil, 0, err
 	}
 	request.Header.Add("Authorization", "Basic "+auth)
+	request.Header.Set("Content-Type", "application/json")
 
 	client := urlfetch.Client(c)
 	response, err := client.Do(request)
@@ -97,4 +98,12 @@ func WriteJSONResponse(c context.Context, w http.ResponseWriter, data interface{
 func WriteJSONError(c context.Context, w http.ResponseWriter, errMsg string) {
 	w.WriteHeader(http.StatusInternalServerError)
 	w.Write([]byte(fmt.Sprintf(`{"error": "%s"}`, errMsg)))
+}
+
+func Stringify(obj interface{}) string {
+	body, err := json.Marshal(obj)
+	if err != nil {
+		return err.Error()
+	}
+	return string(body)
 }
