@@ -19,7 +19,8 @@
 
   <div class="row" *ngIf="product">
     <div class="col-8 text-left">
-      <select style="width:100%; margin:auto;">
+      <select #shipMethod style="width:100%; margin:auto;" 
+       (change)="onShippingSelect($event.target)">
         <option 
           *ngFor="let opt of product.deliveredPrices; let i = index" 
           id="{{opt.deliveryMethodCode}}" selected="{{opt.isDefault}}">

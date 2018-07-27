@@ -10,7 +10,9 @@ export class ProductDetailsComponent implements OnChanges, OnInit {
 
   @Input()
   product: any;  // TODO formalize Product as a class
+
   details: any; // should be a superset of product
+  shippingMethod: '';
   quantity = 0;
   fieldMap = {};
   fieldList = [];
@@ -29,6 +31,14 @@ export class ProductDetailsComponent implements OnChanges, OnInit {
       this.fieldMap = {};
       this.fieldList = [];
       this.quantity = this.product.quantityMinimum;
+      const that = this;
+      if (!this.shippingMethod) {
+        this.product.deliveredPrices.forEach(element => {
+          if (element.isDefault) {
+            that.shippingMethod = element.deliveryMethodCode;
+          }
+        });
+      }
     }
   }
 
@@ -97,6 +107,14 @@ export class ProductDetailsComponent implements OnChanges, OnInit {
   }
 
   emitConfiguration() {
-    this.configuration.emit(this.fieldMap);
+    this.configuration.emit({
+      details: this.fieldMap,
+      quantity: this.quantity,
+      shippingMethod: this.shippingMethod
+    });
+  }
+
+  onShippingSelect(item) {
+    this.shippingMethod = this.product.deliveredPrices[item.selectedIndex].deliveryMethodCode;
   }
 }

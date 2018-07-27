@@ -8,6 +8,7 @@ import { ArchwizardModule } from 'angular-archwizard';
 import { ProductDetailsComponent } from './product-details/product-details.component';
 import { ProductItemComponent } from './product-item/product-item.component';
 import { UserDetailsComponent } from './user-details/user-details.component';
+import { OrderPriceComponent } from './order-price/order-price.component';
 
 @NgModule({
   declarations: [
@@ -15,7 +16,8 @@ import { UserDetailsComponent } from './user-details/user-details.component';
     ProductListComponent,
     ProductDetailsComponent,
     ProductItemComponent,
-    UserDetailsComponent
+    UserDetailsComponent,
+    OrderPriceComponent
   ],
   imports: [
     ArchwizardModule,

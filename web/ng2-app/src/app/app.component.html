@@ -5,7 +5,6 @@
   </h1>
   <p>
     Welcome. This demonstration is a partial implementation of an Order workflow.
-    Unfinished wizard steps are stubbed for context.
   </p>
   <aw-wizard #wizard>
     <aw-wizard-step [stepTitle]="'Select Product'">        
@@ -21,15 +20,12 @@
     </aw-wizard-step>
 
     <aw-wizard-step [stepTitle]="'Place Order'">
-      <div class="centered-content">
-        <div class="stub-header">
-          Place Order
-        </div>    
-        <div class="btn-group">
-          <!-- <button type="button" class="btn btn-secondary" [awGoToStep]="{ stepOffset: -1 }">Recipient</button> -->
-          <button type="button" class="btn btn-secondary" [awGoToStep]="{ stepOffset: 1 }">Accept</button>
-        </div>
+      <app-order-price [order]="order"></app-order-price>
+      
+      <div class="btn-group">
+        <button type="button" class="btn btn-secondary" [awGoToStep]="{ stepOffset: 1 }">Place Order</button>
       </div>
+      
     </aw-wizard-step>
 
     <aw-wizard-step [stepTitle]="'Review Order'">
