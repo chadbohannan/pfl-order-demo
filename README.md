@@ -176,7 +176,13 @@ POST https://testapi.pfl.com/products?apikey=123&id=123
             "quantity":             int,
             "productionDays":       int,
             "partnerItemReference": string,
-            "itemFile":             string e.g. "http://www.x.com/files/art.pdf"
+            "itemFile":             string e.g. "http://www.x.com/files/art.pdf",
+            "templateData": [
+                {
+                    "templateDataName":  string,
+                    "templateDataValue": string
+                }
+            ]
         }
     ],
     "shipments": [
