@@ -1,6 +1,7 @@
 package gopfl
 
 import (
+	"bytes"
 	"context"
 	"encoding/json"
 	"errors"
@@ -15,31 +16,53 @@ import (
 var getCache = map[string][]byte{}
 
 // GetURLContentBasicAuth executs a blocking GET of a url with a Basic Auth header
-func GetURLContentBasicAuth(c context.Context, url, auth string) ([]byte, error) {
+func GetURLContentBasicAuth(c context.Context, url, auth string) ([]byte, int, error) {
 	if content, ok := getCache[url]; ok {
 		// TODO check content metadata to allow cache expiration
-		return content, nil
+		return content, 0, nil
 	}
 
 	request, err := http.NewRequest("GET", url, nil)
 	if err != nil {
-		return nil, err
+		return nil, 0, err
 	}
 	request.Header.Add("Authorization", "Basic "+auth)
 
 	client := urlfetch.Client(c)
 	response, err := client.Do(request)
 	if err != nil {
-		return nil, err
+		return nil, 0, err
 	}
 	defer response.Body.Close()
 	result, err := ioutil.ReadAll(response.Body)
 	if err != nil {
-		return nil, err
+		return nil, 0, err
 	}
 	// cache result DISABLED until cache expiration logic is used
 	// getCache[url] = result
-	return result, nil
+	return result, response.StatusCode, nil
+}
+
+// GetURLContentBasicAuth executs a blocking GET of a url with a Basic Auth header
+func PostURLContentBasicAuth(c context.Context, url, auth string, body []byte) ([]byte, int, error) {
+	request, err := http.NewRequest("POST", url, bytes.NewBuffer(body))
+	if err != nil {
+		return nil, 0, err
+	}
+	request.Header.Add("Authorization", "Basic "+auth)
+
+	client := urlfetch.Client(c)
+	response, err := client.Do(request)
+	if err != nil {
+		return nil, 0, err
+	}
+	defer response.Body.Close()
+
+	result, err := ioutil.ReadAll(response.Body)
+	if err != nil {
+		return nil, 0, err
+	}
+	return result, response.StatusCode, nil
 }
 
 func getAccessParameters(c context.Context) (string, string, string, error) {
