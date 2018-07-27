@@ -12,7 +12,6 @@ export class UserDetailsComponent implements OnInit {
 
   details = {};
 
-
   constructor() {
     [
       "firstName",
@@ -23,10 +22,10 @@ export class UserDetailsComponent implements OnInit {
       "city",
       "state",
       "postalCode",
-      "countryCode",
       "email",
       "phone"
     ].forEach( param => this.details[param] = "");
+    this.details["countryCode"] = "US";
   }
 
   ngOnInit() {

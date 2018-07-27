@@ -19,7 +19,7 @@ export class AppComponent {
   shippingMethod = "";
   recipient: any;       // wizard step 3
   order: any;           // wizard step 4
-  priceResponse = "";
+  orderResponse = "";
 
   @ViewChild("wizard")
   public wizard: WizardComponent;
@@ -82,7 +82,6 @@ export class AppComponent {
         }, this.recipient)
       ]
     };
-    this.postPriceQuery();
     this.goToNextStep();
   }
 
@@ -95,22 +94,20 @@ export class AppComponent {
   }
 
   onPlaceOrder() {
-    this.postPriceQuery();
-    // this.order = {};
+    this.postOrder();
   }
 
-  postPriceQuery() {
-    const url = '/api/price';
+  postOrder() {
+    const url = '/api/order';
     const headers = new Headers();
     headers.append('Content-Type', 'application/json');
     const body = JSON.stringify(this.order);
     const that = this;
     this.http.post(url, body, { headers: headers })
       .subscribe(response => {
-        const responce = response.json();
-        that.priceResponse = response.text();
+        that.orderResponse = response.text();
       }, error => {
-        that.priceResponse = "Error: " + error.text();
+        that.orderResponse = "Error: " + error.text();
       });
   }
 }

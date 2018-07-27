@@ -1,5 +1,6 @@
 <div class="text-left">
-  <pre *ngIf="order">
-    {{orderText()}}
-  </pre>
+  
+  <pre *ngIf="itemPrice">
+      ${{itemPrice.totalPrice.toFixed(2)}}
+    </pre>
 </div>
