@@ -13,21 +13,11 @@
     </aw-wizard-step>
 
     <aw-wizard-step [stepTitle]="'Refine Product'">
-      <app-product-details [product]="selectedProduct"></app-product-details>
-      <div class="btn-group">
-        <button type="button" class="btn btn-secondary" [awGoToStep]="{ stepOffset: 1 }">Next Step</button>
-        <!-- <button type="button" class="btn btn-secondary" [awGoToStep]="{ stepOffset: -1 }">Products</button> -->
-      </div>
+      <app-product-details [product]="selectedProduct" (configuration)="onProductConfig($event)"></app-product-details>
     </aw-wizard-step>
 
     <aw-wizard-step [stepTitle]="'Recipient Details'">
-      <div class="stub-header">
-        Recipient Address
-      </div>  
-      <div class="btn-group">
-        <!-- <button type="button" class="btn btn-secondary" [awGoToStep]="{ stepOffset: -1 }">Customize</button> -->
-        <button type="button" class="btn btn-secondary" [awGoToStep]="{ stepOffset: 1 }">Place Order</button>
-      </div>
+      <app-user-details (values)="onRecipientDetails($event)"></app-user-details>
     </aw-wizard-step>
 
     <aw-wizard-step [stepTitle]="'Place Order'">

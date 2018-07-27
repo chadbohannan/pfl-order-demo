@@ -38,7 +38,6 @@ export class ProductListComponent implements OnInit {
   }
 
   onSelect(i: number) {
-    console.log('selected:' + this.productData.results.data[i].name);
     this.selection.emit(this.productData.results.data[i]);
   }
 

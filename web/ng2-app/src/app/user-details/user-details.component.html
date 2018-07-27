@@ -1,0 +1,83 @@
+<div class="container bottom-15">
+  
+  <!-- Name -->
+  <div class="row">
+    <div class="col-6 input-field">
+      <input type="text"  class="form-input form-control"
+        [(ngModel)]="details['firstName']"  [ngModelOptions]="{standalone: true}"
+        placeholder="First Name"> 
+    </div>
+
+    <div class="col-6 input-field">
+      <input type="text"  class="form-input form-control"
+          [(ngModel)]="details['lastName']"  [ngModelOptions]="{standalone: true}"
+          placeholder="Last Name"> 
+    </div>
+  </div>
+
+  <!-- Company -->
+  <div class="row">
+    <div class="col-12 input-field">
+      <input type="text"  class="form-input form-control"
+        [(ngModel)]="details['companyName']"  [ngModelOptions]="{standalone: true}"
+        placeholder="Company Name"> 
+    </div>
+
+  </div>
+
+  <!-- Address -->
+  <div class="row">
+    <div class="col-6 input-field">
+      <input type="text"  class="form-input form-control"
+        [(ngModel)]="details['address1']"  [ngModelOptions]="{standalone: true}"
+        placeholder="Address 1"> 
+    </div>
+
+    <div class="col-6 input-field">
+      <input type="text"  class="form-input form-control"
+          [(ngModel)]="details['address2']"  [ngModelOptions]="{standalone: true}"
+          placeholder="Address 2"> 
+    </div>
+  </div>
+
+    <!-- City, State, Zip -->
+  <div class="row">
+    <div class="col-5 input-field">
+      <input type="text"  class="col- 5 form-input form-control"
+        [(ngModel)]="details['city']"  [ngModelOptions]="{standalone: true}"
+        placeholder="City"> 
+    </div>
+
+    <div class="col-3 input-field">
+      <input type="text"  class="form-input form-control"
+          [(ngModel)]="details['state']"  [ngModelOptions]="{standalone: true}"
+          placeholder="State"> 
+    </div>
+
+    <div class="col-4 input-field">
+      <input type="text"  class="form-input form-control"
+          [(ngModel)]="details['postalCode']"  [ngModelOptions]="{standalone: true}"
+          placeholder="Postal Code"> 
+    </div>
+  </div>
+
+    <!-- Contact -->
+  <div class="row">
+    <div class="col-6 input-field">
+      <input type="text"  class="form-input form-control"
+        [(ngModel)]="details['email']"  [ngModelOptions]="{standalone: true}"
+        placeholder="E-Mail"> 
+    </div>
+
+    <div class="col-6 input-field">
+      <input type="text"  class="form-input form-control"
+          [(ngModel)]="details['phone']"  [ngModelOptions]="{standalone: true}"
+          placeholder="Phone"> 
+    </div>
+  </div>
+
+</div>
+
+<div class="btn-group">
+  <button type="button" class="btn btn-secondary" (click)="emitValues()">Accept & Continue</button>
+</div>

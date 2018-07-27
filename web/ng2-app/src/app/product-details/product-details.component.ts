@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, OnInit } from '@angular/core';
+import { Component, Input, OnChanges, OnInit, Output, EventEmitter } from '@angular/core';
 import { Http, Headers } from '@angular/http';
 
 @Component({
@@ -6,7 +6,7 @@ import { Http, Headers } from '@angular/http';
   templateUrl: './product-details.component.html',
   styleUrls: ['../app.global.css', './product-details.component.css']
 })
-export class ProductDetailsComponent implements OnInit {
+export class ProductDetailsComponent implements OnChanges, OnInit {
 
   @Input()
   product: any;  // TODO formalize Product as a class
@@ -15,13 +15,16 @@ export class ProductDetailsComponent implements OnInit {
   fieldMap = {};
   fieldList = [];
 
+  @Output()
+  configuration =  new EventEmitter();
+
   constructor(private http: Http) { }
 
   ngOnInit() {
   }
 
   ngOnChanges() {
-    if (this.product.productID) {
+    if (this.product && this.product.productID) {
       this.getProductDetails(this.product.productID);
       this.fieldMap = {};
       this.fieldList = [];
@@ -45,7 +48,6 @@ export class ProductDetailsComponent implements OnInit {
           details.results.data.templateFields.fieldlist.field) {
           this.fieldList = details.results.data.templateFields.fieldlist.field;
         }
-        console.log(details);
         this.details = details;
       }, error => {
         console.log('GET product' + productID + ' err:' + error.json());
@@ -92,5 +94,9 @@ export class ProductDetailsComponent implements OnInit {
       this.fieldMap[field.fieldname].length == 0 ) {
       this.fieldMap[field.fieldname] = field.orgvalue;
     }
+  }
+
+  emitConfiguration() {
+    this.configuration.emit(this.fieldMap);
   }
 }

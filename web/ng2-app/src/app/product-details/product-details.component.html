@@ -17,7 +17,7 @@
     </div>
   </div>
 
-  <div class="row">
+  <div class="row" *ngIf="product">
     <div class="col-8 text-left">
       <select style="width:100%; margin:auto;">
         <option 
@@ -36,7 +36,7 @@
 
 </div>
 
-<div *ngIf="product.hasTemplate">
+<div *ngIf="product && product.hasTemplate">
   <div class="fields-header">
     Customization Template
   </div>
@@ -57,5 +57,9 @@
         (keydown.enter)="setDefaultFieldValue(field)"
         placeholder="{{field.prompt[0].text}}"> 
     </div>
-    
+  </div>
+</div>
+
+<div class="btn-group">
+  <button type="button" class="btn btn-secondary" (click)="emitConfiguration()">Accept & Continue</button>      
 </div>
