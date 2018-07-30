@@ -32,13 +32,11 @@ export class ProductDetailsComponent implements OnChanges, OnInit {
       this.fieldList = [];
       this.quantity = this.product.quantityMinimum;
       const that = this;
-      if (!this.shippingMethod) {
-        this.product.deliveredPrices.forEach(element => {
-          if (element.isDefault) {
-            that.shippingMethod = element.deliveryMethodCode;
-          }
-        });
-      }
+      this.product.deliveredPrices.forEach(element => {
+        if (element.isDefault) {
+          that.shippingMethod = element.deliveryMethodCode;
+        }
+      });
     }
   }
 
