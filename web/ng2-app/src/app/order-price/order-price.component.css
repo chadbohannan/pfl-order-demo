@@ -1,0 +1,8 @@
+.bottom-line {
+    border-style: solid;
+    margin-top: 2px;
+    border-top: 2px;
+    border-bottom: 0px;
+    border-left: 0px;
+    border-right: 0px;
+}

@@ -21,7 +21,6 @@
 
     <aw-wizard-step [stepTitle]="'Place Order'">
       <app-order-price [order]="order"></app-order-price>
-      <p>{{priceResponse}}</p>
       <div class="btn-group">
         <button type="button" class="btn btn-secondary" (click)="onPlaceOrder()">Place Order</button>
       </div>
@@ -30,11 +29,30 @@
 
     <aw-wizard-step [stepTitle]="'Review Order'">
       <div class="centered-content">
-        <div class="stub-header">
-          Review Order
+        <div class="stub-header" *ngIf="!orderNumber">
+          Placing Order...
         </div>
+
+        <div *ngIf="orderNumber">
+          <div class="stub-header">
+            Order Complete
+          </div>
+          <div>
+            Order Number: {{orderNumber}}
+          </div>
+        </div>
+
+        <div *ngIf="errorList.length > 0">
+          <div class="stub-header">
+            Order Failed
+          </div>
+          <div *ngFor="let err of errorList">
+            {{err}}
+          </div>
+        </div>
+        
         <div class="btn-group">
-          <button type="button" class="btn btn-secondary" awResetWizard>Reset</button>
+          <button type="button" class="btn btn-secondary" awResetWizard>Return to Products</button>
         </div>
       </div>
     </aw-wizard-step>

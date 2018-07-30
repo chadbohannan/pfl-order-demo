@@ -19,12 +19,22 @@ export class AppComponent {
   shippingMethod = "";
   recipient: any;       // wizard step 3
   order: any;           // wizard step 4
-  orderResponse = "";
+  orderResponse: any;
+  orderNumber: string;
+  errorList = [];
 
   @ViewChild("wizard")
   public wizard: WizardComponent;
 
   constructor(private http: Http) {}
+
+  goToNextStep() {
+    this.wizard.navigation.goToNextStep();
+  }
+
+  goToPreviousStep() {
+    this.wizard.navigation.goToPreviousStep();
+  }
 
   // selectedProduct is an input parameter to the Product Details step
   productSelected(selection) {
@@ -51,7 +61,6 @@ export class AppComponent {
         templateDataValue: "Colorful Baloons Ltd."
       });
     });
-    
 
     this.order = {
       partnerOrderReference: "refCode::TODO",
@@ -82,19 +91,16 @@ export class AppComponent {
         }, this.recipient)
       ]
     };
+
+    // price check
     this.goToNextStep();
   }
 
-  goToNextStep() {
-    this.wizard.navigation.goToNextStep();
-  }
-
-  goToPreviousStep() {
-    this.wizard.navigation.goToPreviousStep();
-  }
-
   onPlaceOrder() {
+    this.orderNumber = null;
+    this.errorList = [];
     this.postOrder();
+    this.goToNextStep();
   }
 
   postOrder() {
@@ -105,9 +111,13 @@ export class AppComponent {
     const that = this;
     this.http.post(url, body, { headers: headers })
       .subscribe(response => {
-        that.orderResponse = response.text();
+        that.orderResponse = response.json();
+        that.orderNumber = that.orderResponse.results.data.orderNumber;
       }, error => {
-        that.orderResponse = "Error: " + error.text();
+        const obj = error.json();
+        obj.results.errors.forEach( err => {
+          err.dataElementErrors.forEach(msg => this.errorList.push(msg));
+        });
       });
   }
 }

@@ -12,6 +12,28 @@ export class OrderPriceComponent implements OnChanges, OnInit {
 
   response: any;
   itemPrice: any;
+  quantity = 0;
+
+  priceAttributes =[
+    ["envelopePrice", "Envelope Price"],
+    ["mailingPrice", "Mailing Price"],
+    ["promotionalDiscount", "Promotional Discount"],
+    ["retailFulfillmentPrice", "Retail Fulfillment Price"],
+    ["retailPrintPrice", " Retail Print Price"],
+    ["retailReimbursementPrice", "Retail Reimbursement Price"],
+    ["retailRushPrice", "Retail Rush Price"],
+    ["retailShippingPrice", "Retail Shipping Price"],
+    ["secondSheetPrice", "Second Sheet Price"],
+    ["printingCostEach", "Printing Cost Each"],
+    ["printPrice", "Print Price"],
+    ["rushPrice", "Rush Price"],
+    ["shipPrice", "Ship Price"],
+    ["totalPrintingPrice", "Total Shipping Price"],
+  ];
+
+  printAttr(attr){
+    console.log(attr);
+  }
 
   constructor(private http: Http) { }
 
@@ -25,18 +47,6 @@ export class OrderPriceComponent implements OnChanges, OnInit {
 
   orderText(): string {
     return JSON.stringify(this.order, null, 4);
-  }
-
-  responseText(): string {
-    if (this.response &&
-      this.response.results &&
-      this.response.results.data &&
-      this.response.results.data.items &&
-      this.response.results.data.items.length > 0) {
-      this.itemPrice = this.response.results.data.items[0].itemPrice;
-      return JSON.stringify(this.itemPrice, null, 4);
-    }
-    return JSON.stringify(this.response, null, 4);
   }
 
   postPriceQuery() {
@@ -54,6 +64,7 @@ export class OrderPriceComponent implements OnChanges, OnInit {
           obj.results.data.items &&
           obj.results.data.items.length > 0) {
           that.itemPrice = obj.results.data.items[0].itemPrice;
+          that.quantity = obj.results.data.items[0].quantity;
           that.response = null;
         } else {
           that.response = response;

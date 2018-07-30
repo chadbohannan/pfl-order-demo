@@ -1,6 +1,35 @@
-<div class="text-left">
   
-  <pre *ngIf="itemPrice">
-      ${{itemPrice.totalPrice.toFixed(2)}}
-    </pre>
+<div class="container" *ngIf="itemPrice">
+  
+  <div class="row" style="width: 100%">
+    <div class="col-6 text-right">
+      Quanitity
+    </div>
+    <div class="col-6 text-left">
+      {{quantity}}
+    </div>
+  </div>
+
+  <div *ngFor="let attr of priceAttributes">
+    <div *ngIf="itemPrice[attr[0]]">
+      <div class="row" style="width: 100%;">
+        <div class="col-6 text-right">
+          {{attr[1]}}
+        </div>
+        <div class="col-6 text-left">
+          ${{itemPrice[attr[0]].toFixed(2)}}
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="row" style="width: 100%">
+    <div class="col-6 text-right">
+      Total Price
+    </div>
+    <div class="col-6 text-left">
+       ${{itemPrice.totalPrice.toFixed(2)}}
+    </div>
+  </div>
+    
 </div>
